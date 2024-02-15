@@ -1,0 +1,115 @@
+﻿@model IEnumerable<EnglishCollege2024.Deudas>
+
+@{
+    ViewBag.Title = "Deudas";
+    var idEstudiante = ViewBag.idEstudiante;
+    List<Deudas> Deudas = (List<Deudas>)ViewBag.DeudasTot;
+    List<CancelarDeudas> DeudasCancel = (List<CancelarDeudas>)ViewBag.DeudasTotCancel;
+    var DeudaTotal = ViewBag.SumaTotal;
+    var DeudaTotCancelar = ViewBag.SumaTotalCancel;
+}
+
+<h2>Detalle de Deudas</h2>
+@*<div class="col-auto" style="margin-left: 350px">
+        @Html.ActionLink("Cancelar Deudas", "CancelarDeudas", "Deudas", new { @class = "btn btn-primary" })
+    </div>*@
+<br />
+<table class="table">
+    @if (Deudas != null && Deudas.Count > 0)
+    {
+        <tr>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.Estudiante.DNI)
+                </th>*@
+            <th>
+                @Html.Label("Concepto")
+            </th>
+            <th>
+                @Html.Label("Deuda por Concepto")
+            </th>
+        </tr>
+
+        foreach (var item in Deudas)
+        {
+            if (item.Activo)
+            {
+                <tr>
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.Estudiante.DNI)
+                        </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Concepto)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.deudaPorConcepto)
+                    </td>
+                    <td>
+                        @*@Html.ActionLink("Editar", "Edit", new { id = item.Id }) |
+                            @Html.ActionLink("Info", "Details", new { id = item.Id }) |*@
+                        @Html.ActionLink("Cancelar", "CancelarDeudas", new { id = item.id }, new { @class = "btn btn-primary" })
+                    </td>
+                </tr>
+            }
+        }
+        <br />
+        <tr>
+            <td style="text-align: right">
+                @Html.Label("Deuda Total")
+            </td>
+            <td>
+                @DeudaTotal
+            </td>
+        </tr>
+    }
+
+</table>
+@if (DeudasCancel != null && DeudasCancel.Count > 0)
+{
+    <hr />
+    <h4>Deudas a Cancelar</h4>
+    <div>
+        <hr />
+        <div class="form-group">
+            <div class="col-md-8">
+                <div class="table-responsive ">
+
+                    <table style="border-spacing: 10px">
+                        <tbody>
+                            @foreach (var item in DeudasCancel)
+                            {
+                                if (item.Activo)
+                                {
+                                    <tr>
+                                        <td class="col-md-8">@Html.DisplayFor(m => item.Concepto)</td>
+                                        <td class="col-md-8">@Html.DisplayFor(m => item.deudaPorConcepto)</td>
+                                        <td class="col-md-10">
+                                            @Html.ActionLink("Anular", "Anular", new { id = item.id }, new { @class = "btn btn-danger" })
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            <br />
+                            <tr>
+                                <td class="col-md-8" style="padding-right: 50px; text-align: right">Total a Cancelar</td>
+                                <td class="col-md-8">@DeudaTotCancelar</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group ">
+        <div class="col-md-offset-5 col-md-10" style="margin-top:80px">
+            @Html.ActionLink("Cancelar Deuda", "CancelarDeuda", "Estudiante", new { @class = "btn btn-success" })
+        </div>
+    </div>
+}
+<br />
+<br />
+<p>
+    @Html.ActionLink("Volver a Lista", "Index", "Estudiante", new { @class = "btn btn-primary" })
+</p>
+
+

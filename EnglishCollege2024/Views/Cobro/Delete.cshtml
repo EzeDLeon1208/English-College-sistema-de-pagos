@@ -1,0 +1,46 @@
+﻿@model EnglishCollege2024.Cobro
+
+@{
+    ViewBag.Title = "Eliminar Pago";
+}
+
+<h3>Estas seguro/a de querer borrar este pago??</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+
+        @*<dt>
+                @Html.DisplayNameFor(model => model.Estudiante.DNI)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Estudiante.DNI)
+            </dd>*@
+        <dt>
+            @Html.Label("Concepto")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Concepto.Nombre)
+        </dd>
+
+        <dt>
+            @Html.Label("Importe")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.precioTotal)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            @Html.ActionLink("Volver a lista", "Index", "", new { @class = "btn btn-primary" }) |
+            <input type="submit" value="Eliminar" class="btn btn-danger" />
+        </div>
+    }
+</div>

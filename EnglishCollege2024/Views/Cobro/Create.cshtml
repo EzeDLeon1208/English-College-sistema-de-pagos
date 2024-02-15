@@ -1,0 +1,196 @@
+﻿@model EnglishCollege2024.Cobro
+
+@{
+    ViewBag.Title = "Crear";
+    List<SelectListItem> concepto = (List<SelectListItem>)ViewBag.Conceptos;
+    List<SelectListItem> medioPago = (List<SelectListItem>)ViewBag.MedioPago;
+
+    List<DetallePagos> PagosGen = (List<DetallePagos>)ViewBag.PagosGen;
+    var curso = ViewBag.Curso;
+    var precio = ViewBag.precio;
+    var SumaTotal = ViewBag.SumaTotal;
+    //var nomConcep = ViewBag.concepNom;
+    //List<SelectListItem> estudiante = (List<SelectListItem>)ViewBag.Estudiante;
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h3>Crear Pagos</h3>
+        <hr />
+        <h5>Curso: @curso</h5>
+        <br />
+        <div class="row">
+            <div class="col-4">
+                <p> Costo: <span id="precioN">@precio</span> </p>
+            </div>
+            @*<div class="col-4">
+                    <p> Debe: <span id="deuda"></span> </p>
+                </div>*@
+        </div>
+        <br />
+        <br />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group col-md-4" style="display: none">
+            @Html.LabelFor(model => model.Id, "Id", htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Id, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.Id, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-4" style="display: none">
+            @Html.LabelFor(model => model.idEstudiante, "idEstudiante", htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.idEstudiante, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.idEstudiante, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-4">
+                @Html.Label("Concepto", htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-12">
+                    @Html.DropDownListFor(model => model.idConcepto, concepto, "seleccione concepto", htmlAttributes: new { @class = "form-control", id = "ConceptoDropdown" })
+                    @*@Html.ValidationMessageFor(model => model.idConcepto, "", new { @class = "text-danger" })*@
+                    @if (ViewBag.ErrorConcepto != "")
+                    {
+                        @Html.Label("", (string)ViewBag.ErrorConcepto, new { @class = "text-danger" })
+                    }
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                @Html.Label("Importe", htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.precioTotal, new { htmlAttributes = new { @class = "form-control", id = "Importe", oninput = "actualizarValor()" } })
+                    @*@Html.ValidationMessageFor(model => model.precioTotal, "", new { @class = "text-danger" })*@
+                    @if (ViewBag.ErrorMonto != "")
+                    {
+                        @Html.Label("", (string)ViewBag.ErrorMonto, new { @class = "text-danger" })
+                    }
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                @Html.Label("Medio de Pago", htmlAttributes: new { @class = "control-label col-md-8" })
+                <div class="col-md-12">
+                    @Html.DropDownListFor(model => model.idMPago, medioPago, "seleccione medio", htmlAttributes: new { @class = "form-control" })
+                    @*@Html.ValidationMessageFor(model => model.idConcepto, "", new { @class = "text-danger" })*@
+                    @if (ViewBag.ErrorMPago != "")
+                    {
+                        @Html.Label("", (string)ViewBag.ErrorMPago, new { @class = "text-danger" })
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-1">
+            @*<button class="btn btn-primary">Agregar Concepto</button>*@
+            <input type="submit" value="Agregar Concepto" class="btn btn-success" />
+            @*@Html.ActionLink("Agregar Concepto", "GenerarPago", "Cobro", " ", new { @class = "btn btn-primary" })*@
+        </div>
+        <br />
+
+        @*@if (PagosGen != null && PagosGen.Count() > 0)*@
+        @if ((bool)Session["PagoNuevo"] == true)
+        {
+            <hr />
+            <h4>Conceptos a Cobrar</h4>
+            <div>
+                <hr />
+                <div class="form-group">
+                    <div class="col-md-8">
+                        <div class="table-responsive ">
+
+                            <table style="border-spacing: 10px">
+                                <tbody>
+                                    @foreach (var item in PagosGen)
+                                    {
+                                        <tr>
+                                            <td class="col-md-12">@Html.DisplayFor(m => item.Concepto)</td>
+                                            <td class="col-md-10">@Html.DisplayFor(m => item.importeTotal)</td>
+                                            <td class="col-2">
+                                                @Html.ActionLink("Cancelar", "CancelarConcepto", "Cobro", new { idCon = item.Id }, new { @class = "btn btn-danger" })
+                                            </td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td class="col-md-8" style="padding-right: 50px; text-align: right">Resultado Total</td>
+                                        <td class="col-md-8">@SumaTotal</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group ">
+                <div class="col-md-offset-5 col-md-10" style="margin-top:80px">
+                    @*<input type="submit" value="Generar Pago" class="btn btn-success" />*@
+                    @Html.ActionLink("Generar Pago", "GuardarPago", "Cobro", "", new { @class = "btn btn-primary" })
+                </div>
+            </div>
+        }
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+}
+
+
+
+@*<div>
+       @Html.ActionLink("Back to List", "Index")
+    </div>*@
+
+@section Scripts {
+    @*@Scripts.Render("~/bundles/jqueryval")*@
+    <script>
+    @*var precio = @Html.Raw(Json.Encode(precio));
+    function actualizarValor() {
+        var valorIngresado = document.getElementById("Importe").value;
+        if (valorIngresado == "") {
+            // Obtener el valor ingresado en el campo de texto
+            document.getElementById("deuda").innerText = "0";
+        } else {
+            // Calcular la diferencia
+            var diferencia = precio - parseFloat(valorIngresado);
+
+            // Verificar si la diferencia es 0
+            if (diferencia == 0) {
+                // Si es 0, mostrar "0" en lugar de la diferencia numérica
+                document.getElementById("deuda").innerText = "0";
+            } else {
+                // Actualizar el contenido del elemento de diferencia
+                document.getElementById("deuda").innerText = diferencia;
+            }
+        }
+    }*@
+            //// Obtener el valor del campo de texto
+            //var nuevoTexto = document.getElementById("importe").value;
+
+            //// Actualizar el contenido del div
+            //document.getElementById("miDiv").innerText = nuevoTexto;
+
+        $("#ConceptoDropdown").change(function () {
+            var selectedConceptoId = $(this).val();
+            $.ajax({
+                url: '@Url.Action("CambiarPrecio", "Cobro")',
+                type: 'POST',
+                data: { conceptoId: selectedConceptoId},
+                success: function (data) {
+                    // Actualiza el valor del ViewBag.precio con el valor recibido del servidor
+                    $("#precioN").text(data);
+                    /*var precio = parseFloat(data);*/
+
+                    /*var precio = document.getElementById("precioN").text(data);*/
+                },
+                error: function () {
+                    // Manejar errores si es necesario
+                }
+            });
+        });
+    </script>
+}

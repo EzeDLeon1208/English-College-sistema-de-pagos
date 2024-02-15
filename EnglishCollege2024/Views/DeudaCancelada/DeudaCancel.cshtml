@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Pago Realizado";
+    //var idEstudiante = ViewBag.idEstudiante;
+}
+
+<div class="alert alert-success" style="text-align:center">
+    <h1>Deuda Cancelada Exitosamente</h1>
+</div>
+
+<br />
+<br />
+<br />
+<p class="col-md-12 text-center">
+    @*@Html.ActionLink("Lista de Pagos", "ListaPagos", "CobroRealizado", "", new { @class = "btn btn-info"})*@
+    @Html.ActionLink("Generar PDF", "MostrarPdfDeuda", "DeudaCandelada", new { @class = "btn btn-success" })
+</p>
+<br />
+<p class="col-md-12 text-center" style="margin-top: 3rem">
+    @Html.ActionLink("Cerrar", "Index", "Estudiante", "", new { @class = "btn btn-primary" })
+</p>
+

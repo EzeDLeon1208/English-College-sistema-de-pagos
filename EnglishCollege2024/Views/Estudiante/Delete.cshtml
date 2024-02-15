@@ -1,0 +1,84 @@
+﻿@model EnglishCollege2024.Estudiante
+
+@{
+    ViewBag.Title = "Eliminar Estudiante";
+}
+
+<h3>Estas seguro/a de querer borrar al estudiante?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.Label("Documento")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DNI)
+        </dd>
+
+        <dt>
+            @Html.Label("Nombre y Apellido")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NombreCompleto)
+        </dd>
+
+        <dt>
+            @Html.Label("Fecha de Nacimiento")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaNacimiento)
+        </dd>
+
+        <dt>
+            @Html.Label("Dirección")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Direccion)
+        </dd>
+
+        <dt>
+            @Html.Label("Telefono")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Telefono1)
+        </dd>
+
+        <dt>
+            @Html.Label("Telefono Alternativo")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Telefono2)
+        </dd>
+        <dt>
+            @Html.Label("Barrio")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Barrio.Nombre)
+        </dd>
+
+        <dt>
+            @Html.Label("Curso")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Curso.Nombre)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            @Html.ActionLink("Volver", "Index", "", new { @class = "btn btn-primary" }) |
+            <input type="submit" value="Eliminar" class="btn btn-success" />
+        </div>
+    }
+</div>

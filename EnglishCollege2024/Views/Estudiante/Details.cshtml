@@ -1,0 +1,138 @@
+﻿@model EnglishCollege2024.Estudiante
+
+@{
+    ViewBag.Title = "Detalles";
+    List<DetallePagos> detallesP = (List<DetallePagos>)ViewBag.detallePagos;
+    //var detallesP = ViewBag.detallePagos;
+}
+
+<h2>Información del estudiante</h2>
+
+<div>
+    <hr />
+    <dl class="d-table-row">
+        <dt>
+            @Html.Label("Pendientes de Pago")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PendientePago)
+        </dd>
+
+        <dt>
+            @Html.Label("Documento")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DNI)
+        </dd>
+
+        <dt>
+            @Html.Label("Nombre y Apellido")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NombreCompleto)
+        </dd>
+
+        <dt>
+            @Html.Label("Fecha de Nacimiento")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaNacimiento)
+        </dd>
+
+        <dt>
+            @Html.Label("Dirección")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Direccion)
+        </dd>
+
+        <dt>
+            @Html.Label("Telefono")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Telefono1)
+        </dd>
+
+        <dt>
+            @Html.Label("Telefono Alternativo")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Telefono2)
+        </dd>
+
+        <dt>
+            @Html.Label("Barrio")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Barrio.Nombre)
+        </dd>
+
+        <dt>
+            @Html.Label("Curso")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Curso.Nombre)
+        </dd>
+    </dl>
+</div>
+<br />
+
+<hr />
+<h2>Pagos Realizados</h2>
+<div>
+    <hr />
+    <div class="form-group">
+        <div class="col-md-12">
+            <div class="table-responsive ">
+                @if (detallesP != null && detallesP.Count() > 0)
+                {
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th class="col-2">Concepto</th>
+                                            <th class="col-2">Precio($)</th>
+                                            <th class="col-2">Fecha</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in detallesP)
+                                        {
+                                            if (item.Activo == true)
+                                            {
+                                                <tr>
+                                                    <td class="col-5">@Html.DisplayFor(m => item.Concepto)</td>
+                                                    <td class="col-4">@Html.DisplayFor(m => item.importeTotal)</td>
+                                                    <td class="col-4">@Html.DisplayFor(m => item.FechaPago)</td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <br />
+            <br />
+            <br />
+            <div>
+                <p>
+                    @Html.ActionLink("Volver a lista", "Index", "", new { @class = "btn btn-primary" })
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

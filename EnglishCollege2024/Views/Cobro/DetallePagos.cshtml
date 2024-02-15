@@ -1,0 +1,43 @@
+﻿@model EnglishCollege2024.Cobro
+
+@{
+    ViewBag.Title = "Detalle Pagos";
+    //var idEstudiante = ViewBag.idestudiante;
+}
+
+<h2>Detalles de Pagos del Estudiante</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+
+        @*<dt>
+                @Html.Label("IdEstudiante")
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.idEstudiante)
+            </dd>*@
+
+        <dt>
+            @Html.Label("Concepto")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Concepto.Nombre)
+        </dd>
+
+        <dt>
+            @Html.Label("Importe")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.precioTotal)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @*@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |*@
+    @Html.ActionLink("Volver a Pagos", "Index", "", new { @class = "btn btn-primary" })
+</p>
