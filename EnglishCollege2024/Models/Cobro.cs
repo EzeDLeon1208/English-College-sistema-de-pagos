@@ -25,6 +25,8 @@ namespace EnglishCollege2024
 
         public bool Activo { get; set; }
 
+        public bool? DeudaCancelada { get; set; }
+
         public virtual Concepto Concepto { get; set; }
 
         public virtual Estudiante Estudiante { get; set; }

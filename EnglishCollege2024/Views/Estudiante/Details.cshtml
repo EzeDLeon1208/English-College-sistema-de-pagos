@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Detalles";
     List<DetallePagos> detallesP = (List<DetallePagos>)ViewBag.detallePagos;
+    List<CancelarDeudas> deudaCancelada = (List<CancelarDeudas>)ViewBag.DeudasTot;
     //var detallesP = ViewBag.detallePagos;
 }
 
@@ -126,13 +127,56 @@
                 }
             </div>
             <br />
-            <br />
-            <br />
-            <div>
-                <p>
-                    @Html.ActionLink("Volver a lista", "Index", "", new { @class = "btn btn-primary" })
-                </p>
+            @if (deudaCancelada != null && deudaCancelada.Count > 0)
+            {
+                <hr />
+                <h4>Deudas Canceladas</h4>
+                <div>
+                    <hr />
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="table-responsive ">
+
+                                <table style="border-spacing: 10px">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-2">Concepto</th>
+                                            <th class="col-2">Precio($)</th>
+                                            <th class="col-2">Fecha</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in deudaCancelada)
+                                        {
+                                            if (item.Activo == true)
+                                            {
+                                                <tr>
+                                                    <td class="col-md-5">@Html.DisplayFor(m => item.Concepto)</td>
+                                                    <td class="col-md-4">@Html.DisplayFor(m => item.deudaPorConcepto)</td>
+                                                    <td class="col-md-4">@Html.DisplayFor(m => item.FechaCancelacion)</td>
+                                                </tr>
+                                            }
+                                        }
+                                        @*<br />*@
+                                        @*<tr>
+                <td class="col-md-8" style="padding-right: 50px; text-align: right">Total a Cancelar</td>
+                <td class="col-md-8">@DeudaTotCancelar</td>
+            </tr>*@
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+                <br />
+                <br />
+                <div>
+                    <p>
+                        @Html.ActionLink("Volver a lista", "Index", "", new { @class = "btn btn-primary" })
+                    </p>
+                </div>
             </div>
-        </div>
     </div>
 </div>

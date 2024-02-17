@@ -17,18 +17,17 @@
 <table class="table">
     @if (Deudas != null && Deudas.Count > 0)
     {
-        <tr>
-            @*<th>
-                    @Html.DisplayNameFor(model => model.Estudiante.DNI)
-                </th>*@
-            <th>
-                @Html.Label("Concepto")
-            </th>
-            <th>
-                @Html.Label("Deuda por Concepto")
-            </th>
-        </tr>
-
+                <tr>
+                    @*<th>
+                            @Html.DisplayNameFor(model => model.Estudiante.DNI)
+                        </th>*@
+                    <th>
+                        @Html.Label("Concepto")
+                    </th>
+                    <th>
+                        @Html.Label("Deuda por Concepto")
+                    </th>
+                </tr>
         foreach (var item in Deudas)
         {
             if (item.Activo)
@@ -46,20 +45,21 @@
                     <td>
                         @*@Html.ActionLink("Editar", "Edit", new { id = item.Id }) |
                             @Html.ActionLink("Info", "Details", new { id = item.Id }) |*@
-                        @Html.ActionLink("Cancelar", "CancelarDeudas", new { id = item.id }, new { @class = "btn btn-primary" })
+                        @Html.ActionLink("Cancelar", "CancelarDeuda", new { id = item.id }, new { @class = "btn btn-primary" })
                     </td>
                 </tr>
             }
         }
-        <br />
-        <tr>
-            <td style="text-align: right">
-                @Html.Label("Deuda Total")
-            </td>
-            <td>
-                @DeudaTotal
-            </td>
-        </tr>
+                <br />
+                <tr>
+                    <td style="text-align: right">
+                        @Html.Label("Deuda Total")
+                    </td>
+                    <td>
+                        @DeudaTotal
+                    </td>
+                </tr>
+        
     }
 
 </table>
@@ -102,7 +102,7 @@
     </div>
     <div class="form-group ">
         <div class="col-md-offset-5 col-md-10" style="margin-top:80px">
-            @Html.ActionLink("Cancelar Deuda", "CancelarDeuda", "Estudiante", new { @class = "btn btn-success" })
+            @Html.ActionLink("Cancelar Deuda", "CancelarListaDeudas", "Estudiante", new { @class = "btn btn-success" })
         </div>
     </div>
 }

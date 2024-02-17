@@ -93,6 +93,8 @@ namespace EnglishCollege2024.Controllers
             List<Concepto> Conceptodb = db.Concepto.ToList();
             decimal precioLib = 0;
             decimal fotocop = 0;
+            decimal inscrip = 0;
+            decimal delantal = 0;
             string nomConcep = "";
             foreach (var item in Conceptodb)
             {
@@ -103,6 +105,16 @@ namespace EnglishCollege2024.Controllers
                 {
                     fotocop = 400;
                     precioLib = fotocop;
+                }
+                else if (item.Id == 6)
+                {
+                    delantal = 10000;
+                    precioLib = delantal;
+                }
+                else if (item.Id == 7)
+                {
+                    inscrip = 3500;
+                    precioLib = inscrip;
                 }
                 else if (item.Id == 2)
                 {
@@ -204,7 +216,7 @@ namespace EnglishCollege2024.Controllers
                 }
 
                 db.SaveChanges();// Calcular la suma total de las deudas
-                decimal deudaTotal = db.Cobro.Where(c => c.idEstudiante == idEstudiante).Sum(c => c.Deuda);
+                decimal? deudaTotal = db.Cobro.Where(c => c.idEstudiante == idEstudiante).Sum(c => c.Deuda);
 
 
                 //bool tieneDeuda = cob.Any(c => c.Deuda > 0);
@@ -268,6 +280,14 @@ namespace EnglishCollege2024.Controllers
                 if (concepto.Id == 5) //FOTOCOPIAS
                 {
                     return 400;
+                }
+                else if (concepto.Id == 7) //INSCRIPCION
+                {
+                    return 3500;
+                }
+                else if (concepto.Id == 6) //DELANTAL
+                {
+                    return 10000;
                 }
                 else if (concepto.Id == 2) //LIBRO
                 {
@@ -349,6 +369,8 @@ namespace EnglishCollege2024.Controllers
                     List<Concepto> Conceptodb = db.Concepto.ToList();
                     decimal precioLib = 0;
                     decimal fotocop = 0;
+                    decimal delantal = 0;
+                    decimal inscripcion = 0;
                     string nomConcep = "";
                     foreach (var item in Conceptodb)
                     {
@@ -363,6 +385,16 @@ namespace EnglishCollege2024.Controllers
                     {
                         fotocop = 400;
                         precioLib = fotocop;
+                    }
+                    else if (cobro.idConcepto == 6)
+                    {
+                        delantal = 10000;
+                        precioLib = delantal;
+                    }
+                    else if (cobro.idConcepto == 7)
+                    {
+                        inscripcion = 3500;
+                        precioLib = inscripcion;
                     }
                     else if (cobro.idConcepto == 2)
                     {
@@ -451,6 +483,8 @@ namespace EnglishCollege2024.Controllers
                     List<Concepto> Conceptodb = db.Concepto.ToList();
                     decimal precioLib = 0;
                     decimal fotocop = 0;
+                    decimal delantal = 0;
+                    decimal inscripcion = 0;
                     string nomConcep = "";
                     foreach (var item in Conceptodb)
                     {
@@ -465,6 +499,16 @@ namespace EnglishCollege2024.Controllers
                     {
                         fotocop = 400;
                         precioLib = fotocop;
+                    }
+                    else if (cobro.idConcepto == 6)
+                    {
+                        delantal = 10000;
+                        precioLib = delantal;
+                    }
+                    else if (cobro.idConcepto == 7)
+                    {
+                        inscripcion = 3500;
+                        precioLib = inscripcion;
                     }
                     else if (cobro.idConcepto == 2)
                     {
@@ -554,6 +598,8 @@ namespace EnglishCollege2024.Controllers
                     List<Concepto> Conceptodb = db.Concepto.ToList();
                     decimal precioLib = 0;
                     decimal fotocop = 0;
+                    decimal delantal = 0;
+                    decimal inscripcion = 0;
                     string nomConcep = "";
                     foreach (var item in Conceptodb)
                     {
@@ -568,6 +614,16 @@ namespace EnglishCollege2024.Controllers
                     {
                         fotocop = 400;
                         precioLib = fotocop;
+                    }
+                    else if (cobro.idConcepto == 6)
+                    {
+                        delantal = 10000;
+                        precioLib = delantal;
+                    }
+                    else if (cobro.idConcepto == 7)
+                    {
+                        inscripcion = 3500;
+                        precioLib = inscripcion;
                     }
                     else if (cobro.idConcepto == 2)
                     {
@@ -654,6 +710,8 @@ namespace EnglishCollege2024.Controllers
                     List<Concepto> Conceptodb = db.Concepto.ToList();
                     decimal precioLib = 0;
                     decimal fotocop = 0;
+                    decimal delantal = 0;
+                    decimal inscripcion = 0;
                     string nomConcep = "";
                     foreach (var item in Conceptodb)
                     {
@@ -668,6 +726,16 @@ namespace EnglishCollege2024.Controllers
                     {
                         fotocop = 400;
                         precioLib = fotocop;
+                    }
+                    else if (cobro.idConcepto == 6)
+                    {
+                        delantal = 10000;
+                        precioLib = delantal;
+                    }
+                    else if (cobro.idConcepto == 7)
+                    {
+                        inscripcion = 3500;
+                        precioLib = inscripcion;
                     }
                     else if (cobro.idConcepto == 2)
                     {
@@ -756,6 +824,8 @@ namespace EnglishCollege2024.Controllers
                     List<Concepto> Conceptodb = db.Concepto.ToList();
                     decimal precioLib = 0;
                     decimal fotocop = 0;
+                    decimal delantal = 0;
+                    decimal inscripcion = 0;
                     string nomConcep = "";
                     foreach (var item in Conceptodb)
                     {
@@ -770,6 +840,16 @@ namespace EnglishCollege2024.Controllers
                     {
                         fotocop = 400;
                         precioLib = fotocop;
+                    }
+                    else if (cobro.idConcepto == 6)
+                    {
+                        delantal = 10000;
+                        precioLib = delantal;
+                    }
+                    else if (cobro.idConcepto == 7)
+                    {
+                        inscripcion = 3500;
+                        precioLib = inscripcion;
                     }
                     else if (cobro.idConcepto == 2)
                     {
@@ -857,6 +937,8 @@ namespace EnglishCollege2024.Controllers
                     List<Concepto> Conceptodb = db.Concepto.ToList();
                     decimal precioLib = 0;
                     decimal fotocop = 0;
+                    decimal delantal = 0;
+                    decimal inscripcion = 0;
                     string nomConcep = "";
                     foreach (var item in Conceptodb)
                     {
@@ -871,6 +953,16 @@ namespace EnglishCollege2024.Controllers
                     {
                         fotocop = 400;
                         precioLib = fotocop;
+                    }
+                    else if (cobro.idConcepto == 6)
+                    {
+                        delantal = 10000;
+                        precioLib = delantal;
+                    }
+                    else if (cobro.idConcepto == 7)
+                    {
+                        inscripcion = 3500;
+                        precioLib = inscripcion;
                     }
                     else if (cobro.idConcepto == 2)
                     {
@@ -956,6 +1048,8 @@ namespace EnglishCollege2024.Controllers
                     List<Concepto> Conceptodb = db.Concepto.ToList();
                     decimal precioLib = 0;
                     decimal fotocop = 0;
+                    decimal delantal = 0;
+                    decimal inscripcion = 0;
                     string nomConcep = "";
                     foreach (var item in Conceptodb)
                     {
@@ -969,6 +1063,16 @@ namespace EnglishCollege2024.Controllers
                     {
                         fotocop = 400;
                         precioLib = fotocop;
+                    }
+                    else if (cobro.idConcepto == 6)
+                    {
+                        delantal = 10000;
+                        precioLib = delantal;
+                    }
+                    else if (cobro.idConcepto == 7)
+                    {
+                        inscripcion = 3500;
+                        precioLib = inscripcion;
                     }
                     else if (cobro.idConcepto == 2)
                     {
@@ -989,6 +1093,7 @@ namespace EnglishCollege2024.Controllers
 
                     if (deudaFin > 0)
                     {
+                        cobro.DeudaCancelada = false;
                         List<Estudiante> estu = db.Estudiante.Where(x => x.Id == cobro.idEstudiante).ToList();
                         if (estu != null && estu.Count() > 0)
                         {
@@ -1000,6 +1105,7 @@ namespace EnglishCollege2024.Controllers
                     }
                     else
                     {
+                        cobro.DeudaCancelada = false;
                         List<Estudiante> estu = db.Estudiante.Where(x => x.Id == cobro.idEstudiante).ToList();
                         if (estu != null && estu.Count() > 0)
                         {
@@ -1086,14 +1192,12 @@ namespace EnglishCollege2024.Controllers
                         importe = item.importeTotal;
 
                         sumaImportes += importe;
-
-
                     }
 
                     ViewBag.SumaTotal = sumaImportes;
 
                     // Calcular la suma total de las deudas
-                    decimal sumaDeudas = db.Cobro.Where(c => c.idEstudiante == idEstudiante).Sum(c => c.Deuda);
+                    decimal? sumaDeudas = db.Cobro.Where(c => c.idEstudiante == idEstudiante).Sum(c => c.Deuda);
 
                     if (sumaDeudas > 0)
                     {

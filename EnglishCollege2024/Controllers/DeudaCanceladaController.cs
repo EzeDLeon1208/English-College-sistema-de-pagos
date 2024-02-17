@@ -122,9 +122,9 @@ namespace EnglishCollege2024.Controllers
                                    "                                                       " + "\n" +
                                    "Alumno/a: " + nombreEstud + "\n" +
                                    "                                                       " + "\n" +
-                                   "Deuda Total a cancelar: " + totalImporte.ToString("0,00") + "\n" +
+                                   "Deuda Total Cancelada: " + totalImporte.ToString("0,00") + "\n" +
                                    "                                                       " + "\n" +
-                                   "Conceptos a cancelar:\n" + nombreconcept + "\n" + "\n";
+                                   "Conceptos Cancelados:\n" + nombreconcept          + "\n" + "\n";
 
             //// Configura la fuente y el formato
             //Font font = new Font("Arial", 10);

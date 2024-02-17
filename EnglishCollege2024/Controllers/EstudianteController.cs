@@ -27,7 +27,6 @@ namespace EnglishCollege2024.Controllers
 
             HttpContext.Session["PagoNuevo"] = null;
 
-
             //return View(es.ToListAsync())
             return View(estudiantes.ToList());
         }
@@ -39,18 +38,74 @@ namespace EnglishCollege2024.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Estudiante estudiante = db.Estudiante.Find(id);
             if (estudiante == null)
             {
                 return HttpNotFound();
             }
 
+            var cobro = db.Cobro.Where(c => c.idEstudiante == id).FirstOrDefault();
+            if (cobro == null)
+            {
+                return HttpNotFound();
+            }
+
+            //var deudasTot = (List<Deudas>)Session["ListaDeudas"];
+
+            List<CancelarDeudas> deudaCancel = new List<CancelarDeudas>();
+
+            //bool debe = false;
+            string nombconcep = "";
+
+            List<Estudiante> estDeu = db.Estudiante.Where(x => x.Id == cobro.idEstudiante).ToList();
+            if (estDeu != null && estDeu.Count() > 0)
+            {
+                var est = estDeu.FirstOrDefault();
+
+                List<CancelarDeudas> deudasCan = new List<CancelarDeudas>();
+
+                List<Cobro> cobroD = db.Cobro.Where(x => x.idEstudiante == est.Id).ToList();
+                if (cobroD != null && cobroD.Count() > 0)
+                {
+                    foreach(var deudaSelec in cobroD)
+                    {
+                        if (deudaSelec.Deuda > 0)
+                        {
+                            if (deudaSelec.DeudaCancelada == true)
+                            {
+                                List<Concepto> concep = db.Concepto.Where(x => x.Id == deudaSelec.idConcepto).ToList();
+                                if (concep != null && concep.Count > 0)
+                                {
+                                    foreach (var it in concep)
+                                    {
+                                        nombconcep = it.Nombre.ToString();
+
+                                        CancelarDeudas cancelDeuda = new CancelarDeudas();
+                                        cancelDeuda.id = deudaSelec.Id;
+                                        cancelDeuda.Concepto = nombconcep;
+                                        cancelDeuda.deudaPorConcepto = deudaSelec.Deuda;
+                                        cancelDeuda.FechaCancelacion = DateTime.Now;
+                                        cancelDeuda.Activo = true;
+
+                                        deudasCan.Add(cancelDeuda);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    deudaCancel.AddRange(deudasCan);
+                }
+            }
+
+            // Actualizar la lista original en ViewBag
+            ViewBag.DeudasTot = deudaCancel;
+
             List<DetallePagos> detPagos = new List<DetallePagos>();
 
             //buscamos IdEstudiante de tabla Cobro
             List<Cobro> cob = db.Cobro.Where(x => x.idEstudiante == estudiante.Id).ToList();
             //int idCobro = 0;
-            string nombconcep = "";
             if (cob != null && cob.Count > 0)
             {
                 List<DetallePagos> pagos = new List<DetallePagos>();
@@ -95,53 +150,55 @@ namespace EnglishCollege2024.Controllers
                 return HttpNotFound();
             }
 
-            Session["ListaDeudasCancel"] = null;
-
-            List<Deudas> deudasTot = new List<Deudas>();
-
-            //Session["ListaDeudas"] == null;
+            List<Deudas> listaDeudas = new List<Deudas>();
 
             bool debe = false;
             string nombconcep = "";
 
+            // Busco estudiante que de su Id con idEstudiante de tabla cobro
             List<Estudiante> estDeu = db.Estudiante.Where(x => x.Id == cobro.idEstudiante).ToList();
             if (estDeu != null && estDeu.Count() > 0)
-            {
+            {// Existe? bueno, lo busco y genero un objeto vacio de tipo Lista Deudas
                 var est = estDeu.FirstOrDefault();
 
                 List<Deudas> debeP = new List<Deudas>();
-
+                // Luego busco de tabla Cobro, algun cobro relacionado con el id del estudiante de la tabla 
                 List<Cobro> cobroD = db.Cobro.Where(x => x.idEstudiante == est.Id).ToList();
                 if (cobroD != null && cobroD.Count() > 0)
-                {
+                {// Existe? bueno en el mismo primero busco si hay alguna 
+                    
                     foreach (var item in cobroD)
                     {
-                        if (item.Deuda > 0)
+                        if(item.Deuda > 0)
                         {
-                            List<Concepto> concep = db.Concepto.Where(x => x.Id == item.idConcepto).ToList();
-                            if (concep != null && concep.Count > 0)
+                            if (item.DeudaCancelada == null || item.DeudaCancelada == false)
                             {
-                                foreach (var it in concep)
+                                List<Concepto> concep = db.Concepto.Where(x => x.Id == item.idConcepto).ToList();
+                                if (concep != null && concep.Count > 0)
                                 {
-                                    nombconcep = it.Nombre.ToString();
+                                    foreach (var Con in concep)
+                                    {
+                                        nombconcep = Con.Nombre.ToString();
 
-                                    Deudas deuda = new Deudas();
-                                    deuda.id = item.Id;
-                                    deuda.Concepto = nombconcep;
-                                    deuda.deudaPorConcepto = (decimal)item.Deuda;
-                                    deuda.TotalAdeudado += item.Deuda;
-                                    deuda.Activo = true;
+                                        Deudas deudas = new Deudas();
+                                        deudas.id = item.Id;
+                                        deudas.Concepto = nombconcep;
+                                        deudas.deudaPorConcepto = (decimal)item.Deuda;
+                                        deudas.TotalAdeudado += (decimal)item.Deuda;
+                                        deudas.Activo = true;
 
-                                    debeP.Add(deuda);
+                                        debeP.Add(deudas);
+                                    }
                                 }
                             }
+
                         }
                     }
-                    deudasTot.AddRange(debeP);
+                    listaDeudas.AddRange(debeP);
                 }
             }
 
-            Session["ListaDeudas"] = deudasTot;
+            Session["ListaDeudas"] = listaDeudas;
 
             var ListaDeuda = (List<Deudas>)Session["ListaDeudas"];
 
@@ -155,9 +212,11 @@ namespace EnglishCollege2024.Controllers
                 sumaTotal += importe;
             }
 
+            Session["ListaDeudasCancel"] = null;
+
             ViewBag.SumaTotal = sumaTotal;
 
-            ViewBag.DeudasTot = deudasTot;
+            ViewBag.DeudasTot = listaDeudas;
 
             HttpContext.Session["idEstudiante"] = id;
             //}
@@ -165,7 +224,7 @@ namespace EnglishCollege2024.Controllers
             return View();
         }
 
-        public ActionResult CancelarDeudas(int? id)
+        public ActionResult CancelarDeuda(int? id)
         {
             if (id == null)
             {
@@ -201,8 +260,9 @@ namespace EnglishCollege2024.Controllers
                 if (cobroD != null && cobroD.Count() > 0)
                 {
                     var deudaSelec = db.Cobro.Find(id);
+                    if (deudaSelec.Deuda > 0)
                     {
-                        if (deudaSelec.Deuda > 0)
+                        if(deudaSelec.DeudaCancelada == null || deudaSelec.DeudaCancelada == false) 
                         {
                             List<Concepto> concep = db.Concepto.Where(x => x.Id == deudaSelec.idConcepto).ToList();
                             if (concep != null && concep.Count > 0)
@@ -210,32 +270,32 @@ namespace EnglishCollege2024.Controllers
                                 foreach (var it in concep)
                                 {
                                     nombconcep = it.Nombre.ToString();
+                    
+                                    CancelarDeudas cancelDeuda = new CancelarDeudas();
+                                    cancelDeuda.id = deudaSelec.Id;
+                                    cancelDeuda.Concepto = nombconcep;
+                                    cancelDeuda.deudaPorConcepto = deudaSelec.Deuda;
+                                    cancelDeuda.TotalAdeudado += deudaSelec.Deuda;
+                                    cancelDeuda.FechaCancelacion = DateTime.Now;
+                                    cancelDeuda.Activo = true;
 
-                                    CancelarDeudas cancelDeud = new CancelarDeudas();
-                                    cancelDeud.id = deudaSelec.Id;
-                                    cancelDeud.Concepto = nombconcep;
-                                    cancelDeud.deudaPorConcepto = (decimal)deudaSelec.Deuda;
-                                    cancelDeud.TotalAdeudado += deudaSelec.Deuda;
-                                    cancelDeud.Activo = true;
-
-                                    deudasCan.Add(cancelDeud);
+                                    deudasCan.Add(cancelDeuda);
                                 }
                             }
-                            deudaCancel.AddRange(deudasCan);
-
-                            // Eliminar el objeto seleccionado de la lista original
-                            var cancelarDeuda = deudasTot.FirstOrDefault(d => d.id == id);
-                            if (cancelarDeuda != null)
-                            {
-                                cancelarDeuda.Activo = false;
-                                deudasTot.Remove(cancelarDeuda);
-                            }
-
-                            // Actualizar la lista original en ViewBag
-                            ViewBag.DeudasTot = deudasTot;
                         }
-
                     }
+                    deudaCancel.AddRange(deudasCan);
+
+                    // Eliminar el objeto seleccionado de la lista original
+                    var cancelarDeuda = deudasTot.FirstOrDefault(d => d.id == id);
+                    if (cancelarDeuda != null)
+                    {
+                        cancelarDeuda.Activo = false;
+                        deudasTot.Remove(cancelarDeuda);
+                    }
+
+                    // Actualizar la lista original en ViewBag
+                    ViewBag.DeudasTot = deudasTot;
                 }
             }
 
@@ -320,7 +380,7 @@ namespace EnglishCollege2024.Controllers
                             deuda.id = cobD.Id;
                             deuda.Concepto = nombconcep;
                             deuda.deudaPorConcepto = (decimal)cobD.Deuda;
-                            deuda.TotalAdeudado += cobD.Deuda;
+                            deuda.TotalAdeudado += (decimal)cobD.Deuda;
                             deuda.Activo = true;
 
                             debeP.Add(deuda);
@@ -356,8 +416,8 @@ namespace EnglishCollege2024.Controllers
                 var habilitarDeuda = deudaCancel.FirstOrDefault(d => d.id == id);
                 if (habilitarDeuda != null)
                 {
+                    habilitarDeuda.Activo = false;
                     deudaCancel.Remove(habilitarDeuda);
-                    //habilitarDeuda.Activo = false;
                 }
 
                 ViewBag.DeudasTotCancel = deudaCancel;
@@ -383,7 +443,7 @@ namespace EnglishCollege2024.Controllers
             return View("Deudas");
         }
 
-        public ActionResult CancelarDeuda()
+        public ActionResult CancelarListaDeudas()
         {
             int IdEstudiante = (int)HttpContext.Session["idEstudiante"];
 
@@ -393,50 +453,43 @@ namespace EnglishCollege2024.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var cobro = (Cobro)Session["Cobro"];
+            //var cobro = (Cobro)Session["Cobro"];
 
-            var deudaCancel = (List<CancelarDeudas>)Session["ListaDeudasCancel"];
-            if (deudaCancel != null && deudaCancel.Count() > 0)
+            var listaDeudas = (List<Deudas>)Session["ListaDeudas"];
+            
+            
+            bool algunaDeudaActiva = listaDeudas.Any(d => d.Activo);
+
+                // Verificar si hay alguna deuda activa
+            if (algunaDeudaActiva)
             {
-                foreach (var item in deudaCancel)
-                {
-                    // Obtener el objeto Cobro correspondiente y establecer Deuda a 0
-                    var ActualizarCobro = db.Cobro.FirstOrDefault(c => c.Id == item.id);
-                    if (ActualizarCobro != null)
-                    {
-                        ActualizarCobro.Activo = true;
-                        ActualizarCobro.Deuda = 0;
-                        //db.Entry(ActualizarCobro).State = EntityState.Modified;
-                    }
-                }
-            }
-
-            db.SaveChanges();
-
-            // Establecer la propiedad Deuda a 0 para cada deuda
-
-            decimal sumaDeudas = db.Cobro.Where(c => c.idEstudiante == estudiante.Id).Sum(c => c.Deuda);
-
-            if (sumaDeudas > 0)
-            {
-                Estudiante estu = db.Estudiante.Find(estudiante.Id);
-                if (estu != null)
-                {
-                    estu.TieneDeuda = true;
-                    db.Entry(estu).State = EntityState.Modified;
-                    db.SaveChanges();
-                }
+               estudiante.TieneDeuda = true;
             }
             else
             {
-                Estudiante estu = db.Estudiante.Find(estudiante.Id);
-                if (estu != null)
+                estudiante.TieneDeuda = false;
+            }
+
+            var listaDeudasCancel = (List<CancelarDeudas>)Session["ListaDeudasCancel"];
+
+            foreach (var item in listaDeudasCancel)
+            {
+                // Obtener el objeto Cobro correspondiente y establecer el activo a true
+                var ActualizarCobro = db.Cobro.FirstOrDefault(c => c.Id == item.id);
+                if (ActualizarCobro != null)
                 {
-                    estu.TieneDeuda = false;
-                    db.Entry(estu).State = EntityState.Modified;
-                    db.SaveChanges();
+                    if(item.Activo == true)
+                    {
+                        ActualizarCobro.Activo = true;
+                        ActualizarCobro.DeudaCancelada = true;
+                    }
+                    
                 }
             }
+
+            // Guardar el cambio en la propiedad TieneDeuda del estudiante
+            db.Entry(estudiante).State = EntityState.Modified;
+            db.SaveChanges();
 
             return RedirectToAction("DeudaCancel", "DeudaCancelada", new { idEstudiante = IdEstudiante });
         }
