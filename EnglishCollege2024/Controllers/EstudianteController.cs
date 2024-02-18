@@ -45,7 +45,7 @@ namespace EnglishCollege2024.Controllers
                 return HttpNotFound();
             }
 
-            var cobro = db.Cobro.Where(c => c.idEstudiante == id).FirstOrDefault();
+            Cobro cobro = db.Cobro.Where(c => c.idEstudiante == id).FirstOrDefault();
             if (cobro == null)
             {
                 return HttpNotFound();

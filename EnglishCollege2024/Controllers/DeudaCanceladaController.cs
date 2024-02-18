@@ -111,12 +111,12 @@ namespace EnglishCollege2024.Controllers
             }
 
             // Contenido del ticket
-            string ticketContent = "                       English College                " + "\n" +
-                                   "                     Ricardo Palma 2097               " + "\n" +
-                                   "---------------------------------------------------------  \n" +
+            string ticketContent = "                       English College                 " + "\n" +
+                                   "                     Ricardo Palma 2097                " + "\n" +
+                                   "----------------------------------------------------------  \n" +
                                    "Comprobante de Pago: " + cobro.idEstudiante + "\n" +
-                                   "---------------------------------------------------------  \n" +
-                                   "Fecha: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "\n" +
+                                   "----------------------------------------------------------  \n" +
+                                   "Fecha: " + DateTime.Now.ToString("dd-MM-yyyy HH:mm")     + "\n" +
                                    "                                                       " + "\n" +
                                    "Medio de Pago: " + medioP + "\n" +
                                    "                                                       " + "\n" +
