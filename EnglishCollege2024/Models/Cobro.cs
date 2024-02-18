@@ -27,6 +27,8 @@ namespace EnglishCollege2024
 
         public bool? DeudaCancelada { get; set; }
 
+        public DateTime? FechaDeudaCancel { get; set; }
+
         public virtual Concepto Concepto { get; set; }
 
         public virtual Estudiante Estudiante { get; set; }

@@ -80,14 +80,15 @@ namespace EnglishCollege2024.Controllers
                                     foreach (var it in concep)
                                     {
                                         nombconcep = it.Nombre.ToString();
-
+                                
                                         CancelarDeudas cancelDeuda = new CancelarDeudas();
                                         cancelDeuda.id = deudaSelec.Id;
                                         cancelDeuda.Concepto = nombconcep;
                                         cancelDeuda.deudaPorConcepto = deudaSelec.Deuda;
-                                        cancelDeuda.FechaCancelacion = DateTime.Now;
+                                        if (deudaSelec.FechaDeudaCancel == null) deudaSelec.FechaDeudaCancel = DateTime.Now;
+                                        cancelDeuda.FechaCancelacion = (DateTime)deudaSelec.FechaDeudaCancel;
                                         cancelDeuda.Activo = true;
-
+                                
                                         deudasCan.Add(cancelDeuda);
                                     }
                                 }
@@ -276,7 +277,6 @@ namespace EnglishCollege2024.Controllers
                                     cancelDeuda.Concepto = nombconcep;
                                     cancelDeuda.deudaPorConcepto = deudaSelec.Deuda;
                                     cancelDeuda.TotalAdeudado += deudaSelec.Deuda;
-                                    cancelDeuda.FechaCancelacion = DateTime.Now;
                                     cancelDeuda.Activo = true;
 
                                     deudasCan.Add(cancelDeuda);
@@ -482,8 +482,9 @@ namespace EnglishCollege2024.Controllers
                     {
                         ActualizarCobro.Activo = true;
                         ActualizarCobro.DeudaCancelada = true;
+                        ActualizarCobro.FechaDeudaCancel = DateTime.Now;
                     }
-                    
+
                 }
             }
 
