@@ -20,5 +20,7 @@
         public decimal deudaPorConcepto { get; set; }
 
         public decimal TotalAdeudado { get; set; }
+
+        public virtual Estudiante Estudiante { get; set; }
     }
 }

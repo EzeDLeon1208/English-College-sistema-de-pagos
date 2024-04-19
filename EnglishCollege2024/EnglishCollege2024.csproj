@@ -216,6 +216,8 @@
     <Compile Include="Controllers\CobroController.cs" />
     <Compile Include="Controllers\CobroRealizadoController.cs" />
     <Compile Include="Controllers\DeudaCanceladaController.cs" />
+    <Compile Include="Controllers\CajaController.cs" />
+    <Compile Include="Controllers\DeudaController.cs" />
     <Compile Include="Controllers\EstudianteController.cs" />
     <Compile Include="Models\Barrio.cs" />
     <Compile Include="Models\CancelarDeudas.cs" />
@@ -225,7 +227,9 @@
     <Compile Include="Models\Cuento.cs" />
     <Compile Include="Models\Curso.cs" />
     <Compile Include="Data\EnglishCollegeDbContext.cs" />
+    <Compile Include="Models\Caja.cs" />
     <Compile Include="Models\DetallePagos.cs" />
+    <Compile Include="Models\DetalleDeudas.cs" />
     <Compile Include="Models\Deudas.cs" />
     <Compile Include="Models\Estudiante.cs" />
     <Compile Include="Global.asax.cs">
@@ -2201,6 +2205,8 @@
     <Content Include="Views\CobroRealizado\CobroR.cshtml" />
     <Content Include="Views\DeudaCancelada\DeudaCancel.cshtml" />
     <Content Include="Views\Estudiante\Deudas.cshtml" />
+    <Content Include="Views\Deuda\DetalleDeudas.cshtml" />
+    <Content Include="Views\Caja\Caja.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

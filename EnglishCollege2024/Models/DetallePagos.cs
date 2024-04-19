@@ -22,6 +22,8 @@
 
         public decimal sumaImportes { get; set; }
 
+        public string fechaDetal { get; set; }
+
         public DateTime FechaPago { get; set; }
 
         public bool Activo { get; set; }

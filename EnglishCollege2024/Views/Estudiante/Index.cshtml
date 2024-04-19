@@ -33,11 +33,11 @@
             <thead>
                 <tr>
                     @*<th>
-                            @Html.DisplayNameFor(model => model.Barrio.Nombre)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Curso.Nombre)
-                        </th>*@
+                        @Html.DisplayNameFor(model => model.Barrio.Nombre)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Curso.Nombre)
+                    </th>*@
 
                     <th>
                         @Html.Label("Nombre y Apellido")
@@ -45,20 +45,22 @@
                     <th>
                         @Html.Label("Documento")
                     </th>
+                    <th>
+                        @Html.Label("Acciones")
+                    </th>
 
                     @*<th>
-                            @Html.DisplayNameFor(model => model.FechaNacimiento)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Direccion)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Telefono1)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Telefono2)
-                        </th>*@
-                    <th></th>
+                        @Html.DisplayNameFor(model => model.FechaNacimiento)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Direccion)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Telefono1)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Telefono2)
+                    </th>*@
                 </tr>
             </thead>
 
@@ -115,18 +117,26 @@
             }
         </table>
     </div>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.css">
+    @*<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">*@
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.3/css/dataTables.bootstrap5.min.css">
+    @*<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.css">*@
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-2.0.3/datatables.min.css">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.js"></script>
+    @*<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.js"></script>*@
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/v/bs5/dt-2.0.3/datatables.min.js"></script>
 </div>
 
 @section Scripts{
     <script>
         $(document).ready(function () {
             // Llamo a datatable
+            /*new DataTable('#tblEstudiante', {*/
+            /*$('#tblEstudiante').DataTable({*/
+            //let table = $('#tblEstudiante').DataTable({
             let table = new DataTable('#tblEstudiante', {
                 "searching": false,
+                "paging": true,
+                "pageLength": 10,
                 language: {
                     "decimal": "",
                     "emptyTable": "No hay información",

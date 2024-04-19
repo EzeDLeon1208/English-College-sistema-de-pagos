@@ -114,8 +114,8 @@
                                             {
                                                 <tr>
                                                     <td class="col-5">@Html.DisplayFor(m => item.Concepto)</td>
-                                                    <td class="col-4">@Html.DisplayFor(m => item.importeTotal)</td>
-                                                    <td class="col-4">@Html.DisplayFor(m => item.FechaPago)</td>
+                                                    <td class="col-5">@Html.DisplayFor(m => item.importeTotal)</td>
+                                                    <td class="col-5">@Html.DisplayFor(m => item.fechaDetal)</td>
                                                 </tr>
                                             }
                                         }
@@ -152,16 +152,11 @@
                                             {
                                                 <tr>
                                                     <td class="col-md-5">@Html.DisplayFor(m => item.Concepto)</td>
-                                                    <td class="col-md-4">@Html.DisplayFor(m => item.deudaPorConcepto)</td>
-                                                    <td class="col-md-4">@Html.DisplayFor(m => item.FechaCancelacion)</td>
+                                                    <td class="col-md-5">@Html.DisplayFor(m => item.deudaPorConcepto)</td>
+                                                    <td class="col-md-5">@Html.DisplayFor(m => item.fechaCan)</td>
                                                 </tr>
                                             }
                                         }
-                                        @*<br />*@
-                                        @*<tr>
-                <td class="col-md-8" style="padding-right: 50px; text-align: right">Total a Cancelar</td>
-                <td class="col-md-8">@DeudaTotCancelar</td>
-            </tr>*@
                                     </tbody>
                                 </table>
 

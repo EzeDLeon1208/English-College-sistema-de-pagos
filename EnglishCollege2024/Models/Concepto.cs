@@ -15,7 +15,7 @@ namespace EnglishCollege2024
             Cobro = new HashSet<Cobro>();
         }
 
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         [StringLength(100)]
         public string Nombre { get; set; }

@@ -102,7 +102,7 @@ namespace EnglishCollege2024.Controllers
 
             foreach (var concep in ListaCancelarDeudas)
             {
-                nombreconcept += concep.Concepto + "\n";
+                nombreconcept += concep.Concepto + ": $" + concep.deudaPorConcepto + "\n";
 
                 decimal importe = 0;
                 importe = concep.deudaPorConcepto;

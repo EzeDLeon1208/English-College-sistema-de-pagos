@@ -57,6 +57,8 @@ namespace EnglishCollege2024.Controllers
 
             //bool debe = false;
             string nombconcep = "";
+            string fechaCancel = "";
+            string fechaDetalle = "";
 
             List<Estudiante> estDeu = db.Estudiante.Where(x => x.Id == cobro.idEstudiante).ToList();
             if (estDeu != null && estDeu.Count() > 0)
@@ -87,6 +89,8 @@ namespace EnglishCollege2024.Controllers
                                         cancelDeuda.deudaPorConcepto = deudaSelec.Deuda;
                                         if (deudaSelec.FechaDeudaCancel == null) deudaSelec.FechaDeudaCancel = DateTime.Now;
                                         cancelDeuda.FechaCancelacion = (DateTime)deudaSelec.FechaDeudaCancel;
+                                        fechaCancel = cancelDeuda.FechaCancelacion.Value.ToString("dd/MM/yyyy");
+                                        cancelDeuda.fechaCan = fechaCancel;
                                         cancelDeuda.Activo = true;
                                 
                                         deudasCan.Add(cancelDeuda);
@@ -124,6 +128,8 @@ namespace EnglishCollege2024.Controllers
                             detalPagos.idCobro = it.Id;
                             detalPagos.importeTotal = (decimal)it.precioTotal;
                             detalPagos.FechaPago = it.FechaPago;
+                            fechaDetalle = detalPagos.FechaPago.ToString("dd-MM-yyyy");
+                            detalPagos.fechaDetal = fechaDetalle;
                             detalPagos.Activo = it.Activo;
                             pagos.Add(detalPagos);
                         }
@@ -274,7 +280,9 @@ namespace EnglishCollege2024.Controllers
                     
                                     CancelarDeudas cancelDeuda = new CancelarDeudas();
                                     cancelDeuda.id = deudaSelec.Id;
+                                    cancelDeuda.IdConcepto = deudaSelec.idConcepto;
                                     cancelDeuda.Concepto = nombconcep;
+                                    cancelDeuda.IdMPago = deudaSelec.idMPago;
                                     cancelDeuda.deudaPorConcepto = deudaSelec.Deuda;
                                     cancelDeuda.TotalAdeudado += deudaSelec.Deuda;
                                     cancelDeuda.Activo = true;
@@ -483,8 +491,17 @@ namespace EnglishCollege2024.Controllers
                         ActualizarCobro.Activo = true;
                         ActualizarCobro.DeudaCancelada = true;
                         ActualizarCobro.FechaDeudaCancel = DateTime.Now;
-                    }
 
+                        Cobro nuevoCobro = new Cobro();
+                        nuevoCobro.idConcepto = ActualizarCobro.idConcepto;
+                        nuevoCobro.idEstudiante = ActualizarCobro.idEstudiante;
+                        nuevoCobro.idMPago = ActualizarCobro.idMPago;
+                        nuevoCobro.precioTotal = ActualizarCobro.Deuda;
+                        nuevoCobro.FechaPago = (DateTime)ActualizarCobro.FechaDeudaCancel;
+
+                        // Agregar el nuevo pago a la base de datos
+                        db.Cobro.Add(nuevoCobro);
+                    }
                 }
             }
 

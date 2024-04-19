@@ -11,16 +11,22 @@
     {
         public int? id { get; set; }
 
+        public int? IdConcepto { get; set; }
+
         public int? idEstudiante { get; set; }
 
         public string Concepto { get; set; }
 
         public bool Activo { get; set; }
 
+        public int? IdMPago { get; set; }
+
         public decimal deudaPorConcepto { get; set; }
 
         public decimal TotalAdeudado { get; set; }
 
-        public DateTime FechaCancelacion { get; set; }
+        public string fechaCan { get; set; }
+
+        public DateTime? FechaCancelacion { get; set; }
     }
 }

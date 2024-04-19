@@ -1,0 +1,97 @@
+﻿@model EnglishCollege2024.Caja
+
+@{
+    ViewBag.Title = "Caja";
+    List<Caja> listaCaja = (List<Caja>)ViewBag.listaCaja;
+    var CajaTotalEfectivo = ViewBag.CajaTotalEfectivo;
+    var CajaTotalVirtual = ViewBag.CajaTotalVirtual;
+}
+
+<h2>Caja</h2>
+<br />
+<div class="row">
+    <div class="form-group col-md-4">
+        <div class="col-md-12">
+            <form action="/Caja/CajaPorFecha" method="POST">
+                <div class="input-group-append">
+                    @Html.Label("Desde Fecha", htmlAttributes: new { @class = "control-label col-md-6" })
+                    @Html.TextBoxFor(model => model.FechaCobroDesde, new { @type = "datetime-local" })
+                    @*<button class="btn btn-primary" type="submit">
+                            <i class="fas fa-search fa-sm"></i>
+                        </button>*@
+                </div>
+                <div class="input-group-append">
+                    @Html.Label("Hasta Fecha", htmlAttributes: new { @class = "control-label col-md-6" })
+                    @Html.TextBoxFor(model => model.FechaCobroHasta, new { @type = "datetime-local" })
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fas fa-search fa-sm"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<br />
+<table class="table">
+    @if (listaCaja != null && listaCaja.Count > 0)
+     {
+
+        <tr>
+            <th>
+                @Html.Label("Concepto")
+            </th>
+            <th>
+                @Html.Label("Monto Abonado")
+            </th>
+            <th>
+                @Html.Label("Fecha")
+            </th>
+        </tr>
+        foreach (var item in listaCaja)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Concepto)
+                </td>
+                <td>
+                    @Html.Label("$") @Html.DisplayFor(modelItem => item.precioConcepto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaCobroDesde)
+                </td>
+            </tr>
+        }
+        <br />
+        <tr>
+            <td style="text-align: left">
+                @Html.Label("Monto abonado en efectivo:") @Html.Label("$") @CajaTotalEfectivo
+            </td>
+            <td style="text-align: left">
+                @Html.Label("Monto abonado por transferencia:") @Html.Label("$") @CajaTotalVirtual
+            </td>
+        </tr>
+     }
+    else
+    {
+        <tr>
+            <td>
+                <p><strong>No Existen pagos generados a la fecha</strong></p>
+            </td>
+        </tr>
+    }
+</table>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+@section Scripts {
+    @*<script>
+        $(document).ready(function () {
+            $('#idConceptosD').change(function () {
+                var conceptoSeleccionado = $(this).val();
+                $('#formConceptosD').attr('action', '/Deuda/DeudasPorConcepto/' + conceptoSeleccionado);
+            });
+        });
+    </script>*@
+}
+
+

@@ -122,13 +122,11 @@ namespace EnglishCollege2024.Controllers
 
             string nombreconcept = "";
             decimal totalImporte = 0;
-
+            decimal importe = 0;
 
             foreach (var concep in ListaPagos)
             {
-                nombreconcept += concep.Concepto + "\n";
-
-                decimal importe = 0;
+                nombreconcept += concep.Concepto + ": $" + concep.importeTotal + "\n";
                 importe = concep.importeTotal;
 
                 totalImporte += importe;
@@ -146,9 +144,9 @@ namespace EnglishCollege2024.Controllers
                                    "                                                       " + "\n" +
                                    "Alumno/a: " + nombreEstud + "\n" +
                                    "                                                       " + "\n" +
-                                   "Importe Total: " + totalImporte.ToString("0,00") + "\n" +
+                                   "Importe Total: " + totalImporte.ToString("0,00")         + "\n" +
                                    "                                                       " + "\n" +
-                                   "Conceptos a pagar:\n" + nombreconcept + "\n" + "\n";
+                                   "Conceptos a pagar:\n" + nombreconcept + "\n"             + "\n";
 
             //// Configura la fuente y el formato
             //Font font = new Font("Arial", 10);

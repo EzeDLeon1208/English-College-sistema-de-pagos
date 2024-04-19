@@ -1,0 +1,106 @@
+﻿@model EnglishCollege2024.DetalleDeudas
+
+@{
+    ViewBag.Title = "DetalleDeudas";
+    var idEstudiante = ViewBag.idEstudiante;
+    List<SelectListItem> concepto = (List<SelectListItem>)ViewBag.Conceptos;
+    List<DetalleDeudas> listaDeudas = (List<DetalleDeudas>)ViewBag.listaDeudas;
+    //var DeudaTotal = ViewBag.SumaTotal;
+}
+
+<h2>Detalle de Deudas</h2>
+
+<div class="form-group col-md-4">
+    @Html.Label("Concepto", htmlAttributes: new { @class = "control-label col-md-4" })
+    <div class="col-md-12">
+        <form action="/Deuda/DeudasPorConcepto" method="POST">
+            <div class="input-group-append">
+                @Html.DropDownListFor(model => model.idConcepto, concepto, "seleccione concepto", htmlAttributes: new { @class = "form-control"})
+                <button class="btn btn-primary" type="submit" id="idConceptosD">
+                    <i class="fas fa-search fa-sm"></i>
+                </button>
+            </div>
+        </form>
+
+            @*<form action="/Deuda/DeudasPorConcepto" id="formConceptosD" method="POST">
+                <div class="input-group-append">
+                    <select class="form-control" type="submit" id="idConceptosD" name="idConcepto">
+                        <option value="@concepto">Seleccione concepto</option>
+                        @foreach (var item in concepto)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                    <button class="btn btn-primary" type="submit" id="idConceptosD">
+                        <i class="fas fa-search fa-sm"></i>
+                    </button>
+                </div>
+            </form>*@
+    </div>
+</div>
+<br />
+<table class="table">
+   @if (listaDeudas != null && listaDeudas.Count > 0)
+    {
+        <tr>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.Estudiante.DNI)
+                </th>*@
+            <th>
+                @Html.Label("Nombre Completo")
+            </th>
+            <th>
+                @Html.Label("Documento")
+            </th>
+            <th>
+                @Html.Label("Concepto")
+            </th>
+            <th>
+                @Html.Label("Deuda por Concepto")
+            </th>
+        </tr>
+        foreach (var item in listaDeudas)
+        {
+            if (item.TieneDeuda)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NombreCompleto)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DNI)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Concepto)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.deudaPorConcepto)
+                    </td>
+                </tr>
+            }
+        }
+    }
+    else
+    {
+       <tr>
+           <td>
+               <p><strong>No Existen deudas de estudiantes con ese concepto</strong></p>
+           </td>
+       </tr>
+    }
+</table>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+@section Scripts {
+    @*<script>
+        $(document).ready(function () {
+            $('#idConceptosD').change(function () {
+                var conceptoSeleccionado = $(this).val();
+                $('#formConceptosD').attr('action', '/Deuda/DeudasPorConcepto/' + conceptoSeleccionado);
+            });
+        });
+    </script>*@
+}
+
+
