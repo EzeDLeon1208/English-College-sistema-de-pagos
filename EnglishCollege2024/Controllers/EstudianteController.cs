@@ -48,7 +48,11 @@ namespace EnglishCollege2024.Controllers
             Cobro cobro = db.Cobro.Where(c => c.idEstudiante == id).FirstOrDefault();
             if (cobro == null)
             {
-                return HttpNotFound();
+                string sinP = "1";
+
+                ViewBag.sinP = sinP;
+
+                return View(estudiante);
             }
 
             //var deudasTot = (List<Deudas>)Session["ListaDeudas"];
@@ -604,9 +608,9 @@ namespace EnglishCollege2024.Controllers
 
                     return View("Create");
                 }
-                else
+                else // si el estudiante existe, verifica las validaciones necesarias para registrar al estudiante
                 {
-                    if (estudiante.idBarrio == null && estudiante.idCurso == null)
+                    if (estudiante.idBarrio == null && estudiante.idCurso == null) // verifica que se seleccione un barrio y un curso
                     {
                         ViewBag.ErrorBarrio = "Dato no valido, debe seleccionar un barrio";
 
@@ -646,137 +650,134 @@ namespace EnglishCollege2024.Controllers
 
                         return View("Create");
                     }
-
-                    if (estudiante.idBarrio == null || estudiante.idCurso == null)
+                    else if (estudiante.idBarrio == null) // verifica que el barrio no sea nulo
                     {
-                        if (estudiante.idBarrio == null)
+                        ViewBag.ErrorBarrio = "Dato no valido, debe seleccionar un barrio";
+
+                        // Combo barrios
+                        List<SelectListItem> barriosM = new List<SelectListItem>();
+
+                        List<Barrio> Barriodb1 = db.Barrio.ToList();
+
+                        foreach (var item in Barriodb1)
                         {
-                            ViewBag.ErrorBarrio = "Dato no valido, debe seleccionar un barrio";
-
-                            // Combo barrios
-                            List<SelectListItem> barriosM = new List<SelectListItem>();
-
-                            List<Barrio> Barriodb1 = db.Barrio.ToList();
-
-                            foreach (var item in Barriodb1)
-                            {
-                                SelectListItem barrio = new SelectListItem();
-                                barrio.Text = item.Nombre.ToString();
-                                barrio.Value = item.Id.ToString();
-                                barrio.Selected = false;
-                                barriosM.Add(barrio);
-                            }
-
-                            ViewBag.barrios = barriosM;
-
-                            // Combo Cursos
-                            List<SelectListItem> cursosM = new List<SelectListItem>();
-
-                            List<Curso> Cursodb1 = db.Curso.ToList();
-
-                            foreach (var item in Cursodb1)
-                            {
-                                SelectListItem curso = new SelectListItem();
-                                curso.Text = item.Nombre.ToString();
-                                curso.Value = item.Id.ToString();
-                                curso.Selected = false;
-                                cursosM.Add(curso);
-                            }
-
-                            ViewBag.Cursos = cursosM;
+                            SelectListItem barrio = new SelectListItem();
+                            barrio.Text = item.Nombre.ToString();
+                            barrio.Value = item.Id.ToString();
+                            barrio.Selected = false;
+                            barriosM.Add(barrio);
                         }
 
-                        if (estudiante.idCurso == null)
+                        ViewBag.barrios = barriosM;
+
+                        // Combo Cursos
+                        List<SelectListItem> cursosM = new List<SelectListItem>();
+
+                        List<Curso> Cursodb1 = db.Curso.ToList();
+
+                        foreach (var item in Cursodb1)
                         {
-                            ViewBag.ErrorCurso = "Dato no valido, debe seleccionar un curso";
-                            // Combo barrios
-                            List<SelectListItem> barriosM = new List<SelectListItem>();
-
-                            List<Barrio> Barriodb1 = db.Barrio.ToList();
-
-                            foreach (var item in Barriodb1)
-                            {
-                                SelectListItem barrio = new SelectListItem();
-                                barrio.Text = item.Nombre.ToString();
-                                barrio.Value = item.Id.ToString();
-                                barrio.Selected = false;
-                                barriosM.Add(barrio);
-                            }
-
-                            ViewBag.barrios = barriosM;
-
-                            // Combo Cursos
-                            List<SelectListItem> cursosM = new List<SelectListItem>();
-
-                            List<Curso> Cursodb1 = db.Curso.ToList();
-
-                            foreach (var item in Cursodb1)
-                            {
-                                SelectListItem curso = new SelectListItem();
-                                curso.Text = item.Nombre.ToString();
-                                curso.Value = item.Id.ToString();
-                                curso.Selected = false;
-                                cursosM.Add(curso);
-                            }
-
-                            ViewBag.Cursos = cursosM;
+                            SelectListItem curso = new SelectListItem();
+                            curso.Text = item.Nombre.ToString();
+                            curso.Value = item.Id.ToString();
+                            curso.Selected = false;
+                            cursosM.Add(curso);
                         }
+
+                        ViewBag.Cursos = cursosM;
 
                         return View("Create");
                     }
-
-                    // Combo barrios
-                    List<SelectListItem> barrios = new List<SelectListItem>();
-
-                    List<Barrio> Barriodb = db.Barrio.ToList();
-
-                    foreach (var item in Barriodb)
+                    else if (estudiante.idCurso == null) // verifica que el curso seleccionado no sea nulo
                     {
-                        SelectListItem barrio = new SelectListItem();
-                        barrio.Text = item.Nombre.ToString();
-                        barrio.Value = item.Id.ToString();
-                        barrio.Selected = false;
-                        barrios.Add(barrio);
+                        ViewBag.ErrorCurso = "Dato no valido, debe seleccionar un curso";
+
+                        // Combo barrios
+                        List<SelectListItem> barriosM = new List<SelectListItem>();
+
+                        List<Barrio> Barriodb1 = db.Barrio.ToList();
+
+                        foreach (var item in Barriodb1)
+                        {
+                            SelectListItem barrio = new SelectListItem();
+                            barrio.Text = item.Nombre.ToString();
+                            barrio.Value = item.Id.ToString();
+                            barrio.Selected = false;
+                            barriosM.Add(barrio);
+                        }
+
+                        ViewBag.barrios = barriosM;
+
+                        // Combo Cursos
+                        List<SelectListItem> cursosM = new List<SelectListItem>();
+
+                        List<Curso> Cursodb1 = db.Curso.ToList();
+
+                        foreach (var item in Cursodb1)
+                        {
+                            SelectListItem curso = new SelectListItem();
+                            curso.Text = item.Nombre.ToString();
+                            curso.Value = item.Id.ToString();
+                            curso.Selected = false;
+                            cursosM.Add(curso);
+                        }
+
+                        ViewBag.Cursos = cursosM;
+
+                        return View("Create");
                     }
-
-                    ViewBag.barrios = barrios;
-
-                    // Combo Cursos
-                    List<SelectListItem> cursos = new List<SelectListItem>();
-
-                    List<Curso> Cursodb = db.Curso.ToList();
-
-                    foreach (var item in Cursodb)
+                    else // ya con todos los datos validados, se procede a guardar el estudiante en base de datos
                     {
-                        SelectListItem curso = new SelectListItem();
-                        curso.Text = item.Nombre.ToString();
-                        curso.Value = item.Id.ToString();
-                        curso.Selected = false;
-                        cursos.Add(curso);
+                        // Combo barrios
+                        List<SelectListItem> barrios = new List<SelectListItem>();
+
+                        List<Barrio> Barriodb = db.Barrio.ToList();
+
+                        foreach (var item in Barriodb)
+                        {
+                            SelectListItem barrio = new SelectListItem();
+                            barrio.Text = item.Nombre.ToString();
+                            barrio.Value = item.Id.ToString();
+                            barrio.Selected = false;
+                            barrios.Add(barrio);
+                        }
+
+                        ViewBag.barrios = barrios;
+
+                        // Combo Cursos
+                        List<SelectListItem> cursos = new List<SelectListItem>();
+
+                        List<Curso> Cursodb = db.Curso.ToList();
+
+                        foreach (var item in Cursodb)
+                        {
+                            SelectListItem curso = new SelectListItem();
+                            curso.Text = item.Nombre.ToString();
+                            curso.Value = item.Id.ToString();
+                            curso.Selected = false;
+                            cursos.Add(curso);
+                        }
+
+                        ViewBag.Cursos = cursos;
+
+
+                        estudiante.Activo = true;
+                        estudiante.TieneDeuda = false;
+                        db.Estudiante.Add(estudiante);
+                        db.SaveChanges();
+
+                        Session["PagoNuevo"] = null;
+
+                        Session["idEst"] = estudiante.Id;
+
+                        TempData["MensajeExito"] = "El estudiante se ha guardado exitosamente.";
+
+                        return RedirectToAction("ReadOnly", "ReadOnly", new { estudianteId = estudiante.Id });
+                        //return RedirectToAction("EditEstudiante", "Estudiante", new { estudianteid = estudiante.Id });
+                        //return RedirectToAction("Create", "Estudiante");
                     }
-
-                    ViewBag.Cursos = cursos;
-
-
-                    estudiante.Activo = true;
-                    estudiante.TieneDeuda = false;
-                    db.Estudiante.Add(estudiante);
-                    db.SaveChanges();
-
-                    Session["PagoNuevo"] = null;
-
-                    Session["idEst"] = estudiante.Id;
-
-                    TempData["MensajeExito"] = "El estudiante se ha guardado exitosamente.";
-
-                    //return RedirectToAction("Create", "Estudiante", new { idEstudiante = estudiante.Id });
-                    return RedirectToAction("Create", "Estudiante");
                 }
             }
-
-            //ViewBag.idBarrio = new SelectList(db.Barrio, "Id", "Nombre", estudiante.idBarrio);
-            //ViewBag.idCurso = new SelectList(db.Curso, "Id", "Nombre", estudiante.idCurso);
-
             return View(estudiante);
         }
 

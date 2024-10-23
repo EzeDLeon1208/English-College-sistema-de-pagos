@@ -215,15 +215,18 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CobroController.cs" />
     <Compile Include="Controllers\CobroRealizadoController.cs" />
+    <Compile Include="Controllers\ConceptoController.cs" />
+    <Compile Include="Controllers\CursoController.cs" />
     <Compile Include="Controllers\DeudaCanceladaController.cs" />
     <Compile Include="Controllers\CajaController.cs" />
     <Compile Include="Controllers\DeudaController.cs" />
     <Compile Include="Controllers\EstudianteController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ReadOnlyController.cs" />
     <Compile Include="Models\Barrio.cs" />
     <Compile Include="Models\CancelarDeudas.cs" />
     <Compile Include="Models\Cobro.cs" />
     <Compile Include="Models\Concepto.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Models\Cuento.cs" />
     <Compile Include="Models\Curso.cs" />
     <Compile Include="Data\EnglishCollegeDbContext.cs" />
@@ -2207,6 +2210,16 @@
     <Content Include="Views\Estudiante\Deudas.cshtml" />
     <Content Include="Views\Deuda\DetalleDeudas.cshtml" />
     <Content Include="Views\Caja\Caja.cshtml" />
+    <Content Include="Views\ReadOnly\EditEstudiante.cshtml" />
+    <Content Include="Views\ReadOnly\ReadOnly.cshtml" />
+    <Content Include="Views\Concepto\ListaConcepto.cshtml" />
+    <Content Include="Views\Concepto\Create.cshtml" />
+    <Content Include="Views\Concepto\Edit.cshtml" />
+    <Content Include="Views\Curso\Create.cshtml" />
+    <Content Include="Views\Curso\Delete.cshtml" />
+    <Content Include="Views\Curso\Edit.cshtml" />
+    <Content Include="Views\Curso\Index.cshtml" />
+    <Content Include="Views\Concepto\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

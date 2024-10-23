@@ -1,0 +1,76 @@
+﻿@model IEnumerable<EnglishCollege2024.Curso>
+
+@{
+    ViewBag.Title = "Cursos";
+    //Layout = "~/Views/Concepto/ListaConcepto.cshtml";
+}
+
+<h2>Lista de Cursos</h2>
+
+
+<form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" asp-controller="Curso" asp-action="Index">
+    <div class="input-group">
+        <input type="text" name="buscar" class="form-control bg-light border-0 small" placeholder="Buscar curso..."
+               aria-label="Buscar" aria-describedby="basic-addon2">
+        <div class="input-group-append">
+            <button class="btn btn-primary" type="submit" value="Buscar">
+                <i class="fas fa-search fa-sm"></i>
+            </button>
+            <div class="col-auto" style="margin-left: 460px">
+                @Html.ActionLink("Crear Curso", "Create", "", new { @class = "btn btn-primary" })
+            </div>
+        </div>
+    </div>
+</form>
+<br />
+<br />
+@*<div class="col-auto" style="margin-left: 550px">
+        @Html.ActionLink("Crear Curso", "Create", "", new { @class = "btn btn-primary" })
+    </div>
+    <br />
+    <br />*@
+<table class="table">
+    <tr>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Nombre)*@
+            @Html.Label("Curso y Precio")
+        </th>
+        @*<th>
+                @Html.DisplayNameFor(model => model.Cuento.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Libro.Nombre)
+            </th>*@
+        <th>
+            @*@Html.DisplayNameFor(model => model.Precio)*@
+            @Html.Label("Precio General")
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.PrecioLibro)*@
+            @Html.Label("Precio de Libro")
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Precio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrecioLibro)
+            </td>
+
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" }) |
+                @Html.ActionLink("Eliminar", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+            </td>
+        </tr>
+    }
+
+</table>
+
+

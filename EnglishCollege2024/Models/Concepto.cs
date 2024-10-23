@@ -20,6 +20,8 @@ namespace EnglishCollege2024
         [StringLength(100)]
         public string Nombre { get; set; }
 
+        public decimal? Precio { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Cobro> Cobro { get; set; }
     }

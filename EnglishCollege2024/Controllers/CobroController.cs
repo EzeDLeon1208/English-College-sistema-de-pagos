@@ -259,7 +259,7 @@ namespace EnglishCollege2024.Controllers
 
 
         [HttpPost]
-        public ActionResult CambiarPrecio(int conceptoId)
+        public ActionResult CambiarPrecio(int? conceptoId)
         {
             decimal precioLib = ObtenerPrecioSegunConcepto(conceptoId);
 
@@ -270,55 +270,47 @@ namespace EnglishCollege2024.Controllers
             return Json(ViewBag.precio);
         }
 
-        private decimal ObtenerPrecioSegunConcepto(int conceptoId)
+        private decimal ObtenerPrecioSegunConcepto(int? conceptoId)
         {
 
             Concepto concepto = db.Concepto.FirstOrDefault(c => c.Id == conceptoId);
             decimal precioCur = 0;
             if (concepto != null)
             {
-                if (concepto.Id == 5) //FOTOCOPIAS
+                if (concepto.Precio != null)
                 {
-                    return 400;
+                    return (decimal)concepto.Precio;
                 }
-                else if (concepto.Id == 7) //INSCRIPCION
+                else 
                 {
-                    return 3500;
-                }
-                else if (concepto.Id == 6) //DELANTAL
-                {
-                    return 10000;
-                }
-                else if (concepto.Id == 2) //LIBRO
-                {
-                    var id = HttpContext.Session["idEstudiante"];
-
-                    Estudiante estud = db.Estudiante.Find(id);
-                    if (estud != null)
+                    if (concepto.Id == 2) //LIBRO
                     {
-                        Curso curso = db.Curso.FirstOrDefault(x => x.Id == estud.idCurso);
-                        decimal pLibro = (decimal)curso.PrecioLibro;
-                        return pLibro;
-                    }
-                }
-                else // RESTO CURSO
-                {
-                    var id = HttpContext.Session["idEstudiante"];
+                        var id = HttpContext.Session["idEstudiante"];
 
-                    Estudiante estud = db.Estudiante.Find(id);
-                    if (estud != null)
-                    {
-                        List<Curso> Cur = db.Curso.Where(x => x.Id == estud.idCurso).ToList();
-                        if (Cur != null && Cur.Count > 0)
+                        Estudiante estud = db.Estudiante.Find(id);
+                        if (estud != null)
                         {
-                            var curso = Cur.FirstOrDefault();
-                            decimal precioCurso = (decimal)curso.Precio;
-                            precioCur = precioCurso;
+                            Curso curso = db.Curso.FirstOrDefault(x => x.Id == estud.idCurso);
+                            decimal pLibro = (decimal)curso.PrecioLibro;
+                            return pLibro;
                         }
                     }
+                    else // RESTO CURSO
+                    {
+                        var id = HttpContext.Session["idEstudiante"];
 
-                    // Manejar el caso en que el concepto no se encuentra en la base de datos
-                    //return precioCur;
+                        Estudiante estud = db.Estudiante.Find(id);
+                        if (estud != null)
+                        {
+                            List<Curso> Cur = db.Curso.Where(x => x.Id == estud.idCurso).ToList();
+                            if (Cur != null && Cur.Count > 0)
+                            {
+                                var curso = Cur.FirstOrDefault();
+                                decimal precioCurso = (decimal)curso.Precio;
+                                precioCur = precioCurso;
+                            }
+                        }
+                    }
                 }
             }
             return precioCur;
@@ -368,10 +360,6 @@ namespace EnglishCollege2024.Controllers
 
                     List<Concepto> Conceptodb = db.Concepto.ToList();
                     decimal precioLib = 0;
-                    decimal fotocop = 0;
-                    decimal delantal = 0;
-                    decimal inscripcion = 0;
-                    string nomConcep = "";
                     foreach (var item in Conceptodb)
                     {
                         SelectListItem concepto = new SelectListItem();
@@ -381,29 +369,11 @@ namespace EnglishCollege2024.Controllers
                         conceptos.Add(concepto);
                     }
 
-                    if (cobro.idConcepto == 5)
-                    {
-                        fotocop = 400;
-                        precioLib = fotocop;
-                    }
-                    else if (cobro.idConcepto == 6)
-                    {
-                        delantal = 10000;
-                        precioLib = delantal;
-                    }
-                    else if (cobro.idConcepto == 7)
-                    {
-                        inscripcion = 3500;
-                        precioLib = inscripcion;
-                    }
-                    else if (cobro.idConcepto == 2)
-                    {
-                        precioLib = precioLibro;
-                    }
-                    else
-                    {
-                        precioLib = precioCurso;
-                    }
+                    int preLibro = 0;
+
+                    preLibro = (int)ObtenerPrecioSegunConcepto(cobro.idConcepto);
+
+                    precioLib = preLibro;
 
                     // Medios de Pago
                     List<SelectListItem> medioP = new List<SelectListItem>();
@@ -482,10 +452,6 @@ namespace EnglishCollege2024.Controllers
 
                     List<Concepto> Conceptodb = db.Concepto.ToList();
                     decimal precioLib = 0;
-                    decimal fotocop = 0;
-                    decimal delantal = 0;
-                    decimal inscripcion = 0;
-                    string nomConcep = "";
                     foreach (var item in Conceptodb)
                     {
                         SelectListItem concepto = new SelectListItem();
@@ -495,29 +461,11 @@ namespace EnglishCollege2024.Controllers
                         conceptos.Add(concepto);
                     }
 
-                    if (cobro.idConcepto == 5)
-                    {
-                        fotocop = 400;
-                        precioLib = fotocop;
-                    }
-                    else if (cobro.idConcepto == 6)
-                    {
-                        delantal = 10000;
-                        precioLib = delantal;
-                    }
-                    else if (cobro.idConcepto == 7)
-                    {
-                        inscripcion = 3500;
-                        precioLib = inscripcion;
-                    }
-                    else if (cobro.idConcepto == 2)
-                    {
-                        precioLib = precioLibro;
-                    }
-                    else
-                    {
-                        precioLib = precioCurso;
-                    }
+                    int preLibro = 0;
+
+                    preLibro = (int)ObtenerPrecioSegunConcepto(cobro.idConcepto);
+
+                    precioLib = preLibro;
 
                     // Medios de Pago
                     List<SelectListItem> medioP = new List<SelectListItem>();
@@ -597,10 +545,6 @@ namespace EnglishCollege2024.Controllers
 
                     List<Concepto> Conceptodb = db.Concepto.ToList();
                     decimal precioLib = 0;
-                    decimal fotocop = 0;
-                    decimal delantal = 0;
-                    decimal inscripcion = 0;
-                    string nomConcep = "";
                     foreach (var item in Conceptodb)
                     {
                         SelectListItem concepto = new SelectListItem();
@@ -610,29 +554,11 @@ namespace EnglishCollege2024.Controllers
                         conceptos.Add(concepto);
                     }
 
-                    if (cobro.idConcepto == 5)
-                    {
-                        fotocop = 400;
-                        precioLib = fotocop;
-                    }
-                    else if (cobro.idConcepto == 6)
-                    {
-                        delantal = 10000;
-                        precioLib = delantal;
-                    }
-                    else if (cobro.idConcepto == 7)
-                    {
-                        inscripcion = 3500;
-                        precioLib = inscripcion;
-                    }
-                    else if (cobro.idConcepto == 2)
-                    {
-                        precioLib = precioLibro;
-                    }
-                    else
-                    {
-                        precioLib = precioCurso;
-                    }
+                    int preLibro = 0;
+
+                    preLibro = (int)ObtenerPrecioSegunConcepto(cobro.idConcepto);
+
+                    precioLib = preLibro;
 
                     // Medios de Pago
                     List<SelectListItem> medioP = new List<SelectListItem>();
@@ -709,10 +635,6 @@ namespace EnglishCollege2024.Controllers
 
                     List<Concepto> Conceptodb = db.Concepto.ToList();
                     decimal precioLib = 0;
-                    decimal fotocop = 0;
-                    decimal delantal = 0;
-                    decimal inscripcion = 0;
-                    string nomConcep = "";
                     foreach (var item in Conceptodb)
                     {
                         SelectListItem concepto = new SelectListItem();
@@ -722,29 +644,11 @@ namespace EnglishCollege2024.Controllers
                         conceptos.Add(concepto);
                     }
 
-                    if (cobro.idConcepto == 5)
-                    {
-                        fotocop = 400;
-                        precioLib = fotocop;
-                    }
-                    else if (cobro.idConcepto == 6)
-                    {
-                        delantal = 10000;
-                        precioLib = delantal;
-                    }
-                    else if (cobro.idConcepto == 7)
-                    {
-                        inscripcion = 3500;
-                        precioLib = inscripcion;
-                    }
-                    else if (cobro.idConcepto == 2)
-                    {
-                        precioLib = precioLibro;
-                    }
-                    else
-                    {
-                        precioLib = precioCurso;
-                    }
+                    int preLibro = 0;
+
+                    preLibro = (int)ObtenerPrecioSegunConcepto(cobro.idConcepto);
+
+                    precioLib = preLibro;
 
                     // Medios de Pago
                     List<SelectListItem> medioP = new List<SelectListItem>();
@@ -795,7 +699,7 @@ namespace EnglishCollege2024.Controllers
                     }
 
                     return View("Create");
-                } // Valida que sea nulo el Importe
+                } // Valida que sea nulo el Importe total
                 else if (cobro.precioTotal == null)
                 {
                     ViewBag.ErrorMonto = "Por favor, agregue un monto";
@@ -823,10 +727,6 @@ namespace EnglishCollege2024.Controllers
 
                     List<Concepto> Conceptodb = db.Concepto.ToList();
                     decimal precioLib = 0;
-                    decimal fotocop = 0;
-                    decimal delantal = 0;
-                    decimal inscripcion = 0;
-                    string nomConcep = "";
                     foreach (var item in Conceptodb)
                     {
                         SelectListItem concepto = new SelectListItem();
@@ -836,29 +736,11 @@ namespace EnglishCollege2024.Controllers
                         conceptos.Add(concepto);
                     }
 
-                    if (cobro.idConcepto == 5)
-                    {
-                        fotocop = 400;
-                        precioLib = fotocop;
-                    }
-                    else if (cobro.idConcepto == 6)
-                    {
-                        delantal = 10000;
-                        precioLib = delantal;
-                    }
-                    else if (cobro.idConcepto == 7)
-                    {
-                        inscripcion = 3500;
-                        precioLib = inscripcion;
-                    }
-                    else if (cobro.idConcepto == 2)
-                    {
-                        precioLib = precioLibro;
-                    }
-                    else
-                    {
-                        precioLib = precioCurso;
-                    }
+                    int preLibro = 0;
+
+                    preLibro = (int)ObtenerPrecioSegunConcepto(cobro.idConcepto);
+
+                    precioLib = preLibro;
 
                     // Medios de Pago
                     List<SelectListItem> medioP = new List<SelectListItem>();
@@ -936,10 +818,6 @@ namespace EnglishCollege2024.Controllers
 
                     List<Concepto> Conceptodb = db.Concepto.ToList();
                     decimal precioLib = 0;
-                    decimal fotocop = 0;
-                    decimal delantal = 0;
-                    decimal inscripcion = 0;
-                    string nomConcep = "";
                     foreach (var item in Conceptodb)
                     {
                         SelectListItem concepto = new SelectListItem();
@@ -949,29 +827,11 @@ namespace EnglishCollege2024.Controllers
                         conceptos.Add(concepto);
                     }
 
-                    if (cobro.idConcepto == 5)
-                    {
-                        fotocop = 400;
-                        precioLib = fotocop;
-                    }
-                    else if (cobro.idConcepto == 6)
-                    {
-                        delantal = 10000;
-                        precioLib = delantal;
-                    }
-                    else if (cobro.idConcepto == 7)
-                    {
-                        inscripcion = 3500;
-                        precioLib = inscripcion;
-                    }
-                    else if (cobro.idConcepto == 2)
-                    {
-                        precioLib = precioLibro;
-                    }
-                    else
-                    {
-                        precioLib = precioCurso;
-                    }
+                    int preLibro = 0;
+
+                    preLibro = (int)ObtenerPrecioSegunConcepto(cobro.idConcepto);
+
+                    precioLib = preLibro;
 
                     // Medios de Pago
                     List<SelectListItem> medioP = new List<SelectListItem>();
@@ -1032,6 +892,7 @@ namespace EnglishCollege2024.Controllers
                     decimal precioLibro = 0;
                     if (est != null)
                     {
+                        // Busca los precios segun los cursos de la tabla
                         List<Curso> Cur = db.Curso.Where(x => x.Id == est.idCurso).ToList();
                         if (Cur != null && Cur.Count > 0)
                         {
@@ -1046,41 +907,57 @@ namespace EnglishCollege2024.Controllers
                     List<SelectListItem> conceptos = new List<SelectListItem>();
 
                     List<Concepto> Conceptodb = db.Concepto.ToList();
-                    decimal precioLib = 0;
-                    decimal fotocop = 0;
-                    decimal delantal = 0;
-                    decimal inscripcion = 0;
-                    string nomConcep = "";
+
                     foreach (var item in Conceptodb)
                     {
-                        SelectListItem concepto = new SelectListItem();
-                        concepto.Text = item.Nombre.ToString();
-                        concepto.Value = item.Id.ToString();
-                        conceptos.Add(concepto);
+                        SelectListItem Concepto = new SelectListItem();
+                        Concepto.Text = item.Nombre.ToString();
+                        Concepto.Value = item.Id.ToString();
+                        conceptos.Add(Concepto);
                     }
 
-                    if (cobro.idConcepto == 5)
+                    decimal precioLib = 0;
+
+                    Concepto concepto = db.Concepto.FirstOrDefault(c => c.Id == cobro.idConcepto);
+
+                    if (concepto != null)
                     {
-                        fotocop = 400;
-                        precioLib = fotocop;
-                    }
-                    else if (cobro.idConcepto == 6)
-                    {
-                        delantal = 10000;
-                        precioLib = delantal;
-                    }
-                    else if (cobro.idConcepto == 7)
-                    {
-                        inscripcion = 3500;
-                        precioLib = inscripcion;
-                    }
-                    else if (cobro.idConcepto == 2)
-                    {
-                        precioLib = precioLibro;
-                    }
-                    else
-                    {
-                        precioLib = precioCurso;
+                        if (concepto.Precio != null)
+                        {
+                            precioLib = (decimal)concepto.Precio;
+                        }
+                        else
+                        {
+                            if (concepto.Id == 2 || concepto.Nombre == "LIBRO") //LIBRO
+                            {
+                                var id = HttpContext.Session["idEstudiante"];
+                                
+                                Estudiante estudi = db.Estudiante.Find(id);
+                                if (estudi != null)
+                                {
+                                    Curso curso = db.Curso.FirstOrDefault(x => x.Id == estudi.idCurso);
+                                    decimal pLib = (decimal)curso.PrecioLibro;
+                                    precioLib = pLib;
+                                }
+                            }
+                            else // RESTO CURSO
+                            {
+                                var id = HttpContext.Session["idEstudiante"];
+
+                                Estudiante estudi = db.Estudiante.Find(id);
+                                if (estudi != null)
+                                {
+                                    decimal pCurso = 0;
+                                    List<Curso> Cur = db.Curso.Where(x => x.Id == estudi.idCurso).ToList();
+                                    if (Cur != null && Cur.Count > 0)
+                                    {
+                                        var curso = Cur.FirstOrDefault();
+                                        pCurso = curso.Precio;
+                                        precioLib = pCurso;
+                                    }
+                                }
+                            }
+                        }
                     }
 
                     ViewBag.Curso = NombCur;
@@ -1273,8 +1150,6 @@ namespace EnglishCollege2024.Controllers
 
         //private void PrintPage(object sender, PrintPageEventArgs e)
         //{
-
-
         //    //var conceptos = db.Concepto.Where(x => x.Id == Cobro.idConcepto).ToList();
         //    //if (conceptos != null && conceptos.Count() > 0)
         //    //{

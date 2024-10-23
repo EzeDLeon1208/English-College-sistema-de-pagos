@@ -6,7 +6,7 @@
     List<SelectListItem> curso = (List<SelectListItem>)ViewBag.cursos;
 }
 
-@using (Html.BeginForm("Edit", "Estudiante"))
+@using (Html.BeginForm("Edit", "ReadOnly"))
 {
     @Html.AntiForgeryToken()
 
@@ -90,16 +90,16 @@
                 </div>
             </div>
         </div>
-            <div class="form-group">
-                <div class="col-md-12 text-center" style="margin-top: 3rem">
-                    <input type="submit" value="Guardar Estudiante y Editar Pagos" class="btn btn-success" />
-                </div>
+        <div class="form-group">
+            <div class="col-md-12 text-center" style="margin-top: 3rem">
+                <input type="submit" value="Guardar" class="btn btn-success" />
             </div>
+        </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Volver a lista", "Index", "", new { @class = "btn btn-primary" })
+    @Html.ActionLink("Volver", "Index", "ReadOnly", new { @class = "btn btn-primary" })
 </div>
 
 @section Scripts {
